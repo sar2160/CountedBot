@@ -23,11 +23,11 @@ for a in return_all:
 ### saving existing to file 
 
 
-def save_ids(id_list, filename='existing_ids.json'):
+def save_ids(id_list, filename='existing_ids.txt'):
     with open(filename, 'w') as f:  # only writing 
         json.dump(id_list, f)
     
-def load_ids(filename='existing_ids.json'):
+def load_ids(filename='existing_ids.txt'):
     with open(filename, 'rb') as f:
         my_list = json.load(f)
     return my_list

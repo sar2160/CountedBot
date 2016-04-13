@@ -10,12 +10,12 @@ from local_settings import *
 
 
     
-def load_ids(filename='existing_ids.json'):
+def load_ids(filename='existing_ids.txt'):
     with open(filename, 'r') as f:
         my_list = load(f)
     return my_list
 
-def save_ids(id_list, filename='existing_ids.json'):
+def save_ids(id_list, filename='existing_ids.txt'):
     with open(filename, 'w') as f:
         dump(id_list, f)
 
@@ -40,12 +40,12 @@ api = tweepy.API(auth)
 
 url = 'http://thecountedapi.com/api/counted'
 r = requests.get(url)
-json = r.json()
+counted_json = r.json()
 
 
 new_cases = 0
 
-for j in json:
+for j in counted_json:
     if j['_id'] not in all_ids:
 
         if j['name'] == 'Unknown':
