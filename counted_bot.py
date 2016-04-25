@@ -1,25 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-
+This script runs on a designated interval, checking for new records added
+to the Counted DataBase and tweeting them. New records are given a unique id and 
+added to 'existing_ids.txt' for tracking (in lieu of a real database)
 """
 
-import requests
-import tweepy
-from json import dump, load
 from local_settings import *
-
-
-    
-def load_ids(filename='existing_ids.txt'):
-    with open(filename, 'r') as f:
-        my_list = load(f)
-    return my_list
-
-def save_ids(id_list, filename='existing_ids.txt'):
-    with open(filename, 'w') as f:
-        dump(id_list, f)
-
-
+from functions import *
 
 
 all_ids = load_ids()
@@ -27,15 +14,8 @@ all_ids = load_ids()
 
 # Just testing functionality with some test data
 if TEST_DATA:
-    del all_ids[-1]
-    del all_ids[-2]
+    del all_ids[1]
 
-
-
-
-auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
-api = tweepy.API(auth)
 
 
 url = 'http://thecountedapi.com/api/counted'
@@ -46,18 +26,19 @@ counted_json = r.json()
 new_cases = 0
 
 for j in counted_json:
-    if j['_id'] not in all_ids:
+    if encode_id(j) not in all_ids:
 
         if j['name'] == 'Unknown':
-            tweet_string =  'An unknown ' + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' +\
+            tweet_string =  'An unknown ' + j['race']+ ' ' + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' +\
                 j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
         else:
-            tweet_string =  j['name'] + ', ' + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' + \
+            tweet_string =  j['name'] + ', a ' + j['race'] + ' ' + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' + \
                 j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
                 
-        print tweet_string if DEBUG else api.update_status(tweet_string)
+        print tweet_string if DEBUG else tweet_and_sleep(api,tweet_string,max_wait)
+        new_id = encode_id(j)
+        all_ids.append(new_id)
         new_cases += 1
-        all_ids.append(j['_id'])
 
 
 if new_cases > 0 :
