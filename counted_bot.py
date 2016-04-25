@@ -18,9 +18,17 @@ if TEST_DATA:
 
 
 
+
 url = 'http://thecountedapi.com/api/counted'
 r = requests.get(url)
 counted_json = r.json()
+
+
+auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+api = tweepy.API(auth)
+
+
 
 
 new_cases = 0
