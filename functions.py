@@ -17,8 +17,6 @@ from random import randint
 
 
 
-
-
 ## create a (hopefully) unique id from name+age+state, normalize the unicode to avoid headaches
 def encode_id(the_json):
     name   = u' '.join( ( the_json['name'], the_json['age'],the_json['state'] ) ).strip()

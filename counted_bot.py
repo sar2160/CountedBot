@@ -37,7 +37,7 @@ for j in counted_json:
     if encode_id(j) not in all_ids:
 
         if j['name'] == 'Unknown':
-            tweet_string =  'An unknown ' + j['race']+ ' ' + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' +\
+            tweet_string =  'An unknown '  + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' +\
                 j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
         else:
             tweet_string =  j['name'] + ', a ' + j['race'] + ' ' + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' + \
