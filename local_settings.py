@@ -17,7 +17,7 @@ ACCESS_SECRET = 'Bk7zKGjJ7y314KcgVP55HbhwQOs1ns4JKbOBn5en55XmS'
 max_wait = 1800 # 30 minutes
 
 
-## debug mode does not tweet, prints to console
+## debug mode does not tweet, prints to console.
 DEBUG = False
 
 # delete some records to force a tweet/print
