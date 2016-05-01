@@ -9,7 +9,7 @@ API Keys and other parameters
 ## Twitter details 
 CONSUMER_KEY        = 'KEY HERE'
 CONSUMER_SECRET     = 'KEY HERE'
-ACCESS_KEY          = 'KEY HERE ' # keep the quotes, replace this with your access token
+ACCESS_KEY          = 'KEY HERE ' 
 ACCESS_SECRET       = 'KEY HERE'
 
 
