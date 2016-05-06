@@ -7,6 +7,9 @@ added to 'existing_ids.txt' for tracking (in lieu of a real database)
 
 from local_settings import *
 from functions import *
+import os
+
+
 
 
 all_ids = load_ids()
@@ -23,6 +26,13 @@ url = 'http://thecountedapi.com/api/counted'
 r = requests.get(url)
 counted_json = r.json()
 
+## Police_Scan
+
+CONSUMER_KEY    = os.environ['CONSUMER_KEY']
+CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
+ACCESS_KEY      = os.environ['ACCESS_KEY']
+ACCESS_SECRET   = os.environ['ACCESS_SECRET']
+
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
@@ -35,9 +45,12 @@ new_cases = 0
 
 for j in counted_json:
     if encode_id(j) not in all_ids:
-
-        if j['name'] == 'Unknown':
-            tweet_string =  'An unknown '  + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' +\
+        
+        if j['name'].lower() == 'unknown':
+            tweet_string =  'An unknown '  + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' + \
+                j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
+        elif j['race'].lower() == 'unknown':
+             tweet_string =  j['name'] + ', a ' + j['sex'] +  ', race unknown' ' , age ' + j['age'].lower() + ', was killed by ' + \
                 j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
         else:
             tweet_string =  j['name'] + ', a ' + j['race'] + ' ' + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' + \
