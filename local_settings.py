@@ -2,7 +2,7 @@
 """
 Created on Tue Apr  5 22:07:28 2016
 
-API Keys and other parameters
+parameters
 """
 
 
