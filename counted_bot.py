@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 """
 This script runs on a designated interval, checking for new records added
-to the Counted DataBase and tweeting them. New records are given a unique id and 
+to the Counted DataBase and tweeting them. New records are given a unique id and
 added to 'existing_ids.txt' for tracking (in lieu of a real database)
 """
 
 from local_settings import *
 from functions import *
 import os
-
-
 
 
 all_ids = load_ids()
@@ -20,13 +18,11 @@ if TEST_DATA:
     del all_ids[1]
 
 
-
-
 url = 'http://thecountedapi.com/api/counted'
 r = requests.get(url)
 counted_json = r.json()
 
-## Police_Scan
+## Police_Scan, set environment variables before running
 
 CONSUMER_KEY    = os.environ['CONSUMER_KEY']
 CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
@@ -45,7 +41,7 @@ new_cases = 0
 
 for j in counted_json:
     if encode_id(j) not in all_ids:
-        
+
         if j['name'].lower() == 'unknown':
             tweet_string =  'An unknown '  + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' + \
                 j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
@@ -55,7 +51,7 @@ for j in counted_json:
         else:
             tweet_string =  j['name'] + ', a ' + j['race'] + ' ' + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' + \
                 j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
-                
+
         print tweet_string if DEBUG else tweet_and_sleep(api,tweet_string,max_wait)
         new_id = encode_id(j)
         all_ids.append(new_id)
@@ -68,6 +64,4 @@ else:
     print 'no new cases'
 
 
-save_ids(all_ids)       
-        
-
+save_ids(all_ids)
