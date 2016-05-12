@@ -2,3 +2,4 @@
 /local_tests.py
 /create_env.sh
 /.DS_Store
+/__init__.py
