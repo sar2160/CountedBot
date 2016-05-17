@@ -35,8 +35,6 @@ auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
 
 
-
-
 new_cases = 0
 
 for j in counted_json:
@@ -49,7 +47,7 @@ for j in counted_json:
              tweet_string =  j['name'] + ', a ' + j['sex'] +  ', race unknown' ' , age ' + j['age'].lower() + ', was killed by ' + \
                 j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
         else:
-            tweet_string =  j['name'] + ', a ' + j['race'] + ' ' + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' + \
+            tweet_string =  j['name'] + ', a ' + j['race'] + ' ' + j['sex'] + ', age ' + j['age'].lower() + ', was killed by ' + \
                 j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
 
         print tweet_string if DEBUG else tweet_and_sleep(api,tweet_string,max_wait)
