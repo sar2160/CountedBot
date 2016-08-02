@@ -10,7 +10,7 @@ parameters
 max_wait = 1800 # 30 minutes
 
 ## debug mode does not tweet, prints to console
-DEBUG = False
+DEBUG = True
 
 # delete some records to force a tweet/print
 TEST_DATA = False

@@ -17,28 +17,32 @@ all_ids = load_ids()
 if TEST_DATA:
     del all_ids[1]
 
+# Police_Scan, set environment variables before running
+if not DEBUG:
+    CONSUMER_KEY    = os.environ['CONSUMER_KEY']
+    CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
+    ACCESS_KEY      = os.environ['ACCESS_KEY']
+    ACCESS_SECRET   = os.environ['ACCESS_SECRET']
+
+    #
+    auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+    auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+    api = tweepy.API(auth)
+
+
+
 
 url = 'http://thecountedapi.com/api/counted'
 r = requests.get(url)
 counted_json = r.json()
 
-## Police_Scan, set environment variables before running
 
-CONSUMER_KEY    = os.environ['CONSUMER_KEY']
-CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
-ACCESS_KEY      = os.environ['ACCESS_KEY']
-ACCESS_SECRET   = os.environ['ACCESS_SECRET']
-
-
-auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
-api = tweepy.API(auth)
 
 
 new_cases = 0
-
+new_ids = list()
 for j in counted_json:
-    if encode_id(j) not in all_ids:
+    if encode_id(j, normalized=True) not in all_ids:
 
         if j['name'].lower() == 'unknown':
             tweet_string =  'An unknown '  + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' + \
@@ -51,8 +55,8 @@ for j in counted_json:
                 j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
 
         print tweet_string if DEBUG else tweet_and_sleep(api,tweet_string,max_wait)
-        new_id = encode_id(j)
-        all_ids.append(new_id)
+
+        new_ids.append(encode_id(j, normalized=True))
         new_cases += 1
 
 
@@ -62,4 +66,4 @@ else:
     print 'no new cases'
 
 
-save_ids(all_ids)
+save_ids(new_ids)
