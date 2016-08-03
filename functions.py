@@ -21,26 +21,7 @@ from local_settings import db
 
 ### Connect to db, this to be subbed for Postgres
 
-if db == 'postgres':
-
-    urlparse.uses_netloc.append("postgres")
-    url = urlparse.urlparse(os.environ["DATABASE_URL"])
-
-    connection = psycopg2.connect(
-        database=url.path[1:],
-        user=url.username,
-        password=url.password,
-        host=url.hostname,
-        port=url.port
-    )
-else:
-    connection = sqlite3.connect('counted')
-
-
-
-
-
-def connect_postrges():
+def connect_postgres():
     urlparse.uses_netloc.append("postgres")
     url = urlparse.urlparse(os.environ["DATABASE_URL"])
 
@@ -51,6 +32,16 @@ def connect_postrges():
         host=url.hostname,
         port=url.port)
     return conn
+
+if db == 'postgres':
+
+    connection = connect_postgres()
+else:
+    connection = sqlite3.connect('counted')
+
+
+
+
 
 
 ## create a (hopefully) unique id from name+age+state, normalize the unicode to avoid headaches
@@ -121,6 +112,6 @@ def load_ids(encode=True):
 def save_ids(id_list):
     c = connection.cursor()
     dump_list = [(i, ) for i in id_list ]
-    c.executemany('INSERT INTO counted_id VALUES (?)',dump_list)
+    c.executemany('INSERT INTO counted_id (id) VALUES (?)',dump_list)
     c.close()
     connection.commit()
