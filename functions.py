@@ -30,7 +30,8 @@ def connect_postgres():
         user=url.username,
         password=url.password,
         host=url.hostname,
-        port=url.port)
+        port=url.port,
+        sslmode='require')
     return conn
 
 if db == 'postgres':
@@ -101,7 +102,7 @@ def run_counted(all_ids, debug=True):
 # load ids already stored
 def load_ids(encode=True):
     c =  connection.cursor()
-    c.execute('SELECT * FROM counted_id')
+    c.execute('SELECT * FROM public.counted_id')
     my_list = c.fetchall()
     c.close()
     if encode: # to unicode from tuple
@@ -112,6 +113,6 @@ def load_ids(encode=True):
 def save_ids(id_list):
     c = connection.cursor()
     dump_list = [(i, ) for i in id_list ]
-    c.executemany('INSERT INTO counted_id (id) VALUES (?)',dump_list)
+    c.executemany("INSERT INTO public.counted_id (id) VALUES (%s)",dump_list)
     c.close()
     connection.commit()
