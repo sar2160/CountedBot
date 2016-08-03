@@ -17,9 +17,28 @@ import sqlite3
 import os
 import psycopg2
 import urlparse
+from local_settings import db
 
 ### Connect to db, this to be subbed for Postgres
-connection = sqlite3.connect('counted')
+
+if db == 'postgres':
+
+    urlparse.uses_netloc.append("postgres")
+    url = urlparse.urlparse(os.environ["DATABASE_URL"])
+
+    connection = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
+else:
+    connection = sqlite3.connect('counted')
+
+
+
+
 
 def connect_postrges():
     urlparse.uses_netloc.append("postgres")

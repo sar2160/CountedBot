@@ -14,3 +14,6 @@ DEBUG = True
 
 # delete some records to force a tweet/print
 TEST_DATA = False
+
+## db connection
+db = 'postgres'  # or sqlite
