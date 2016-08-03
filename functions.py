@@ -14,9 +14,24 @@ import requests
 from json import dump, load
 from random import randint
 import sqlite3
+import os
+import psycopg2
+import urlparse
 
 ### Connect to db, this to be subbed for Postgres
 connection = sqlite3.connect('counted')
+
+def connect_postrges():
+    urlparse.uses_netloc.append("postgres")
+    url = urlparse.urlparse(os.environ["DATABASE_URL"])
+
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port)
+    return conn
 
 
 ## create a (hopefully) unique id from name+age+state, normalize the unicode to avoid headaches
