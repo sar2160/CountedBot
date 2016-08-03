@@ -32,38 +32,4 @@ if not DEBUG:
 
 
 
-url = 'http://thecountedapi.com/api/counted'
-r = requests.get(url)
-counted_json = r.json()
-
-
-
-
-new_cases = 0
-new_ids = list()
-for j in counted_json:
-    if encode_id(j, normalized=True) not in all_ids:
-
-        if j['name'].lower() == 'unknown':
-            tweet_string =  'An unknown '  + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' + \
-                j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
-        elif j['race'].lower() == 'unknown':
-             tweet_string =  j['name'] + ', a ' + j['sex'] +  ', race unknown' ' , age ' + j['age'].lower() + ', was killed by ' + \
-                j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
-        else:
-            tweet_string =  j['name'] + ', a ' + j['race'] + ' ' + j['sex'] + ', age ' + j['age'].lower() + ', was killed by ' + \
-                j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
-
-        print tweet_string if DEBUG else tweet_and_sleep(api,tweet_string,max_wait)
-
-        new_ids.append(encode_id(j, normalized=True))
-        new_cases += 1
-
-
-if new_cases > 0 :
-    print str(new_cases) + ' new cases'
-else:
-    print 'no new cases'
-
-
-save_ids(new_ids)
+run_counted(all_ids, debug=DEBUG)

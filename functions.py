@@ -42,6 +42,8 @@ def encode_id(the_json, normalized = True):
         return normalize( 'NFC',name)
     else:
         return name
+
+
 ## tweet with a semi-random wait between tweets
 def tweet_and_sleep(api,tweet_text,max_wait=5):
 
@@ -51,6 +53,40 @@ def tweet_and_sleep(api,tweet_text,max_wait=5):
     except Exception,e:
         print str(e)
     sleep(randint(0,max_wait))
+
+def run_counted(all_ids, debug=True):
+
+    url = 'http://thecountedapi.com/api/counted'
+    r = requests.get(url)
+    counted_json = r.json()
+
+    new_cases = 0
+    new_ids = list()
+    for j in counted_json:
+        if encode_id(j, normalized=True) not in all_ids:
+
+            if j['name'].lower() == 'unknown':
+                tweet_string =  'An unknown '  + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' + \
+                    j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
+            elif j['race'].lower() == 'unknown':
+                 tweet_string =  j['name'] + ', a ' + j['sex'] +  ', race unknown' ' , age ' + j['age'].lower() + ', was killed by ' + \
+                    j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
+            else:
+                tweet_string =  j['name'] + ', a ' + j['race'] + ' ' + j['sex'] + ', age ' + j['age'].lower() + ', was killed by ' + \
+                    j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
+
+            print tweet_string if debug else tweet_and_sleep(api,tweet_string,max_wait)
+
+            new_ids.append(encode_id(j, normalized=True))
+            new_cases += 1
+
+    if new_cases > 0 :
+        print str(new_cases) + ' new cases'
+    else:
+        print 'no new cases'
+
+
+    save_ids(new_ids)
 
 # load ids already stored
 def load_ids(encode=True):

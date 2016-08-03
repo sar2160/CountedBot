@@ -1,6 +1,0 @@
-requests
-tweepy
-unicodedata
-time
-json
-random

@@ -8,25 +8,8 @@ Counted Database.
 @author: sar2160
 """
 
-
-#
-#import json
-
-
 from functions import *
 
+all_ids = load_ids()
 
-url = 'http://thecountedapi.com/api/counted'
-
-### getting all ids for tracking
-return_all = requests.get(url).json()
-
-all_ids = list()
-for a in return_all:
-    id_str = encode_id(a)
-    all_ids.append(id_str) # create index with name, age, state, presumably unique
-
-### saving existing to file
-
-
-save_ids(all_ids)
+run_counted(all_ids, debug=True)
