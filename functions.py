@@ -35,7 +35,6 @@ def connect_postgres():
     return conn
 
 if db == 'postgres':
-
     connection = connect_postgres()
 else:
     connection = sqlite3.connect('counted')
@@ -102,6 +101,9 @@ def run_counted(all_ids, debug=True):
 # load ids already stored
 def load_ids(encode=True):
     c =  connection.cursor()
+
+    psycopg2.extensions.register_type(psycopg2.extensions.UNICODE, c) #  return query as unicode
+
     c.execute('SELECT * FROM public.counted_id')
     my_list = c.fetchall()
     c.close()
