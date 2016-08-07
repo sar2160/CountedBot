@@ -76,8 +76,10 @@ def run_counted(all_ids, debug=True):
         if encode_id(j, normalized=True) not in all_ids:
 
             if j['name'].lower() == 'unknown':
-                tweet_string =  'An unknown '  + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' + \
-                    j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
+                pass # don't tweet unknown names
+
+                #tweet_string =  'An unknown '  + j['sex'] + ' , age ' + j['age'].lower() + ', was killed by ' + \
+                #    j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'
             elif j['race'].lower() == 'unknown':
                  tweet_string =  j['name'] + ', a ' + j['sex'] +  ', race unknown' ' , age ' + j['age'].lower() + ', was killed by ' + \
                     j['dept'] + ' in ' + j['city'] + ', ' + j['state'] + '.'

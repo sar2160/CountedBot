@@ -7,10 +7,10 @@ parameters
 
 
 # max seconds to sleep between tweets
-max_wait = 1800 # 30 minutes
+max_wait = 1500 # 25 minutes
 
 ## debug mode does not tweet, prints to console
-DEBUG = True
+DEBUG = False
 
 # delete some records to force a tweet/print
 TEST_DATA = False
