@@ -40,7 +40,18 @@ else:
     connection = sqlite3.connect('counted')
 
 
+def connect_tweepy():
+    CONSUMER_KEY    = os.environ['CONSUMER_KEY']
+    CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
+    ACCESS_KEY      = os.environ['ACCESS_KEY']
+    ACCESS_SECRET   = os.environ['ACCESS_SECRET']
 
+
+    auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+    auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+    api = tweepy.API(auth)
+
+    return api
 
 
 
@@ -64,7 +75,9 @@ def tweet_and_sleep(api,tweet_text,max_wait=5):
         print str(e)
     sleep(randint(0,max_wait))
 
-def run_counted(all_ids, debug=True):
+def run_counted(all_ids, max_wait,debug=True ):
+    if not debug:
+        api = connect_tweepy()
 
     url = 'http://thecountedapi.com/api/counted'
     r = requests.get(url)

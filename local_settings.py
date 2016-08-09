@@ -17,3 +17,5 @@ TEST_DATA = False
 
 ## db connection
 db = 'postgres'  # or sqlite
+
+# Police_Scan, set environment variables before running
