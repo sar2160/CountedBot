@@ -72,7 +72,11 @@ def tweet_and_sleep(api,tweet_text,max_wait=5):
         api.update_status(tweet_text)
         print 'tweeted: ' + tweet_text
     except Exception,e:
-        print str(e)
+        if tweet_text is None:
+            print 'no text to tweet'
+        else:
+            print 'tweet failed: ' + tweet_text
+            print 'with error code: ' + str(e)
     sleep(randint(0,max_wait))
 
 def run_counted(all_ids, max_wait,debug=True ):
